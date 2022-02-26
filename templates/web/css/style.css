@@ -1,0 +1,140 @@
+.le{
+  
+   
+       width: 25%;
+      height: 786px;
+      float: left;
+}
+.nav1 img.im1{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    padding: 5px;
+    float: left;
+}
+.nav1 img.im1:hover{
+    cursor: pointer;
+}
+.nav1{
+    height: 50px;
+    background-color: #D6D0C4;
+    
+}
+.im2{
+    width: 25px;
+    height: 25px;
+    float: right;
+    padding: 10px;
+    margin-right: 10px;
+}
+input[type="search"]{
+    width: 100%;
+    height: 50px;
+    border: 0.009px solid #CCC;
+}
+.fr{
+    height: 685px;
+    overflow: auto;
+}
+.f1{
+    height: 45px;
+    background-color: white;
+    padding: 10px;
+}
+.f1:hover{
+    background-color:#D6D0C4; 
+
+}
+.im2:hover{
+    cursor:pointer;
+}
+.f1 img{
+     width: 50px;
+    height: 50px;
+     border-radius: 50px;
+}
+
+.le hr{
+    border: 0.009px solid #f2ece1;
+    width: 90%
+}
+.ph{
+    float: left;
+}
+.p1{
+    float: left;
+    margin-left: 20px;
+    padding: 5px;
+}
+.time{
+    float: right;
+    font-size: 14px;
+    color: #c6c3bc;
+    margin-right: 10px;
+}
+.s1{
+    font-weight: 600;
+}
+.fr:hover{
+    cursor: pointer;
+}
+.nav2{
+   
+    background-color: #D6D0C4;
+    float: left;
+    width: 1187px;
+}
+.in{
+    background-image: url('../images/100.jpg');
+    background-size: cover;
+    width:  1187px;
+    float:right;
+    height: 668px;
+}
+.f5{
+     height: 50px;
+}
+.f5 img{
+     width: 40px;
+    height: 40px;
+     border-radius: 50px;
+}
+.nav3{
+     background-color: #D6D0C4;
+     width:  1165px;
+     padding: 10px;
+     height: 40px;
+}
+.emo{
+    margin-left: 120px;
+    float: left;
+    margin-top: 10px;
+    padding: 10px;
+}
+input[type="text"]{
+    width: 800px;
+    height: 40px;
+    border: 1px solid #CCC;
+    border-radius: 30px;
+}
+.mess{
+    padding: 10px;
+  margin-left: 20px;
+ float: left;
+}
+.send{
+    margin-left: 20px;
+    float: left;
+    margin-top: 10px;
+    padding: 15px;
+     width: 50px;
+}
+.nav3 img:hover{
+    cursor: pointer;
+}
+.nav2 img:hover{
+    cursor: pointer;
+}
+.f1:active{
+    background-color: #61B745;
+}
