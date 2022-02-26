@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->integer('chat_room_id');
+            $table->integer('sender_id');
             $table->string('message')->nullable();
             $table->string('attach')->nullable();
             $table->timestamps();

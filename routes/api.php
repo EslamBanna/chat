@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatRoomController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,9 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'auth'], function () {
 
     Route::post('/create-chat-room',[ChatRoomController::class,'createChatRoom']);
     Route::get('/get-chat-rooms',[ChatRoomController::class,'getChatRooms']);
+
+
+    Route::post('/send-message/{chatRoomId}',[MessageController::class,'sendMessage']);
+    Route::get('/get-messages/{chatRoomId}',[MessageController::class,'getMessages']);
 
 });
