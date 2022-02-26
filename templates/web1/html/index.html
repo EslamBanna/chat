@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Whats app</title>
+    <meta charset="utf-8">
+    <meta name="description" content="whats app">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/67.jpg">
+</head>
+
+<body>
+    <div class="le">
+        <div class="nav1">
+            <!-- <img src="../images/esl.jpg.jpg" alt="eslam" title="solom" class="im1"> -->
+            <img src="https://img.icons8.com/ios-glyphs/100/000000/menu-2.png" class="im2" alt="menu" title="menu">
+            <img src="https://img.icons8.com/material-two-tone/24/000000/topic.png" class="im2" alt="Chat" title="Chat">
+            <img src="https://img.icons8.com/cotton/64/000000/synchronize--v2.png" class="im2" alt="Reload"
+                title="Reload">
+        </div>
+        <form>
+            <input type="search" placeholder="Search for chat or Start with new chat">
+        </form>
+        <div class="fr" id="chatRooms">
+        </div>
+    </div>
+    <div class="nav2">
+        <img src="https://img.icons8.com/ios-glyphs/100/000000/menu-2.png" class="im2" alt="menu" title="menu">
+        <img src="https://img.icons8.com/windows/32/000000/attach.png" class="im2" title="attch" alt="attach">
+        <img src="https://img.icons8.com/material-rounded/24/000000/search.png" class="im2" title="search" alt="search">
+        <div class="f5">
+            <div class="ph"> <img src="../images/78.jpg"></div>
+            <div class="p1"><span class="s1" id="userName"></span><br> <span id="userPhone"></span> </div>
+        </div>
+        <div class="in">
+        </div>
+        <div class="nav3">
+            <div class="emo">
+                <img src="https://img.icons8.com/windows/32/000000/--grin.png" title="Emotions" alt="Emotions">
+            </div>
+            <div class="mess"> <input type="text" placeholder="write Message"> </div>
+            <div class="send"><img src="https://img.icons8.com/material/24/000000/filled-sent.png" alt="Send"
+                    title="send"></div>
+        </div>
+
+    </div>
+    <script>
+        var data;
+        var user;
+        function showData() {
+            // console.log(user);
+            document.getElementById('userName').innerHTML = user["name"];
+            document.getElementById('userPhone').innerHTML = user["phone"];
+            var chatRoom = "";
+            if (data["status"] == false) {
+                console.log("empty")
+            } else {
+                console.log("full")
+                for (var i = 0; i < data["data"].length; i++) {
+                    // console.log(data["data"][i]['id']);
+                    if (data["data"][i]['second_user'] == null) {
+                        chatRoom += `<hr> <div class="f1"> <div class="ph"> <img src="${data["data"][i]['first_user']['image']}"/> </div>
+                <div class="p1"><span class="s1">${data["data"][i]['first_user']['name']}</span><br> ${data["data"][i]['first_user']['phone']}</div>
+                <div class="time">${data["data"][i]['updated_at']} </div> </div>`;
+                    } else {
+                        chatRoom += `<hr> <div class="f1"> <div class="ph"> <img src="${data["data"][i]['second_user']['image']}"/> </div>
+                <div class="p1"><span class="s1">${data["data"][i]['second_user']['name']}</span><br> ${data["data"][i]['second_user']['phone']}</div>
+                <div class="time">${data["data"][i]['updated_at']} </div> </div>`;
+                    }
+                }
+            }
+            var chatRooms = document.getElementById('chatRooms');
+            chatRooms.innerHTML = chatRoom;
+
+        }
+        window.onload = () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ");
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            var test;
+            fetch("http://127.0.0.1:8000/api/auth/get-chat-rooms", requestOptions)
+                .then(response => response.text())
+                .then(function result(x) {
+                    data = JSON.parse(x);
+                })
+                .catch(error => console.log('error', error));
+
+            fetch("http://127.0.0.1:8000/api/user", requestOptions)
+                .then(response => response.text())
+                .then(function result(x) {
+                    user = JSON.parse(x);
+                })
+                .catch(error => console.log('error', error));
+            setTimeout(showData, 1200);
+        };
+    </script>
+</body>
+
+</html>
