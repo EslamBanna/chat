@@ -204,6 +204,80 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "messages",
+			"item": [
+				{
+					"name": "send message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "welcome test",
+									"type": "text"
+								},
+								{
+									"key": "attach",
+									"type": "file",
+									"src": "/E:/WhatsApp Image 2021-09-25 at 1.33.08 AM.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth/send-message/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"send-message",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get chat messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/api/auth/get-messages/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"get-messages",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
