@@ -1,0 +1,4 @@
+pusher
+email = delap60268@robhung.com
+pass = @Asdfghjkl123
+project name = chat-multiway

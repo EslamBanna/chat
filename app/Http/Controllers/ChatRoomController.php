@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateNewChatRoom;
 use App\Models\ChatRoom;
+use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ChatRoomController extends Controller
 {
@@ -12,13 +15,49 @@ class ChatRoomController extends Controller
     public function createChatRoom(Request $request)
     {
         try {
-            if (!$request->has('s_user_id')) {
-                return $this->returnError(202, 'the s_user_id is required');
+
+            if (!$request->has('phoneOrEmail')) {
+                return $this->returnError(202, 'the phoneOrEmail fiels is required');
+            }
+
+            $validator = Validator::make($request->all(), [
+                'phoneOrEmail' => 'required|email'
+            ]);
+
+            $s_user_id = null;
+            if ($validator->fails()) {
+                $user = User::where('phone', $request->phoneOrEmail)->first();
+                if (!$user) {
+                    return $this->returnError(203, 'this user not exist');
+                }
+                $s_user_id = $user->id;
+            } else {
+                $user = User::where('email', $request->phoneOrEmail)->first();
+                if (!$user) {
+                    return $this->returnError(204, 'this user not exist');
+                }
+                $s_user_id = $user->id;
+            }
+            if ($s_user_id == Auth()->user()->id) {
+                return $this->returnError(205, 'you can not added your self');
+            }
+            $chat_room = ChatRoom::where([
+                ['f_user_id', '=', Auth()->user()->id],
+                ['s_user_id', '=', $s_user_id]
+            ])
+                ->orWhere([
+                    ['f_user_id', '=', $s_user_id],
+                    ['s_user_id', '=', Auth()->user()->id]
+                ])
+                ->first();
+            if ($chat_room) {
+                return $this->returnError(206, 'this chat room is already exist');
             }
             ChatRoom::create([
                 'f_user_id' => Auth()->user()->id,
-                's_user_id' => $request->s_user_id
+                's_user_id' => $s_user_id
             ]);
+            event(new CreateNewChatRoom());
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             return $this->returnError(201, $e->getMessage());

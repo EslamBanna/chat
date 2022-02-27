@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="style.css">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 </head>
 
 <body>
@@ -11,12 +12,11 @@
             <header>
                 <button id="createNewChatBtn">create new chat</button>
                 <div id="creatNewChatRoomDiv">
-                    <form action="">
                     <input type="text" name="creatNewChatRoomPhoneOrEmail" id="creatNewChatRoomPhoneOrEmail"
                         placeholder="Enter The number Phone Or Email" required />
-                        <input type="submit" id="creatNewChatRoomAddBtn" value="Add" />
-                        <p>Or Export Users File from Here <input type="file" name="Here" id="Here"></p>
-                    </form>
+                    <button id="creatNewChatRoomAddBtn"> Add</button>
+                    <p>Or Export Users File from Here <input type="file" name="addNewChatRoomsFile"
+                            id="addNewChatRoomsFile"></p>
                 </div>
                 <input type="text" placeholder="search" id="search">
             </header>
@@ -109,94 +109,7 @@
         </main>
     </div>
 
-    <script>
-        var data;
-        var user;
-        window.onload = () => {
-            console.log();
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL");
-
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-            var test;
-            fetch("http://127.0.0.1:8000/api/auth/get-chat-rooms", requestOptions)
-                .then(response => response.text())
-                .then(function result(x) {
-                    data = JSON.parse(x);
-                })
-                .catch(error => console.log('error', error));
-
-            fetch("http://127.0.0.1:8000/api/user", requestOptions)
-                .then(response => response.text())
-                .then(function result(x) {
-                    user = JSON.parse(x);
-                })
-                .catch(error => console.log('error', error));
-            setTimeout(showData, 1200);
-        };
-
-        function showData() {
-            var chatRoom = "";
-            if (data["status"] == false) {
-                console.log("empty")
-            } else {
-                console.log("full")
-                for (var i = 0; i < data["data"].length; i++) {
-                    var lastUpdate = new Date(data["data"][i]['updated_at']);
-                    if (data["data"][i]['second_user'] == null) {
-                        chatRoom += `  <li onclick="openChat('${data["data"][i]['first_user']['name']}', '${data["data"][i]['first_user']['image']}')">
-                    <img class="chatRoomImage" src="${data["data"][i]['first_user']['image']}" alt="">
-                    <div>
-                        <h2>${data["data"][i]['first_user']['name']}</h2>
-                        <h3>
-                            <span class="status orange"></span>
-                            Last Update: ${lastUpdate.toDateString()}
-                        </h3>
-                    </div>
-                </li>`;
-
-                    } else {
-                        chatRoom += `  <li onclick="openChat('${data["data"][i]['second_user']['name']}', '${data["data"][i]['second_user']['image']}')" >
-                    <img class="chatRoomImage" src="${data["data"][i]['second_user']['image']}" alt="">
-                    <div>
-                        <h2>${data["data"][i]['second_user']['name']}</h2>
-                        <h3>
-                            <span class="status orange"></span>
-                            Last Update: ${lastUpdate.toDateString()}
-                        </h3>
-                    </div>
-                </li>`;
-
-                    }
-                }
-            }
-            var chatRooms = document.getElementById('chatRooms');
-            chatRooms.innerHTML = chatRoom;
-
-        }
-        function openChat(userName, userImage) {
-            SecondUserName.innerHTML = userName;
-            document.getElementById('secondUserImage').setAttribute('src', userImage);
-        }
-
-        var createNewChatBtnBool = false;
-        createNewChatBtn.onclick = function () {
-            if (createNewChatBtnBool == false) {
-                creatNewChatRoomDiv.style.height = '150px';
-                creatNewChatRoomDiv.style.border = '1px solid white';
-                creatNewChatRoomAddBtn.style.height = 'auto';
-            } else {
-                creatNewChatRoomDiv.style.height = '0px';
-                creatNewChatRoomDiv.style.border = '0px';
-                creatNewChatRoomAddBtn.style.height = '0px';
-            }
-            createNewChatBtnBool = !createNewChatBtnBool;
-        } 
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
