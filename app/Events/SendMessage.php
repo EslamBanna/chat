@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CreateNewChatRoom implements ShouldBroadcast
+class SendMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,21 +19,29 @@ class CreateNewChatRoom implements ShouldBroadcast
      *
      * @return void
      */
-    public $userId;
-    public $chat_room_data;
-    public function __construct($userId,$chat_room_data)
+    public $message;
+    public $chat_attach;
+    public $chatRoomId;
+    public $userID;
+    public $sender;
+    public $created_at;
+    public function __construct($message, $chat_attach, $chatRoomId, $userID,$sender, $created_at)
     {
-        $this->userId = $userId;
-        $this->chat_room_data = $chat_room_data;
+        $this->message = $message;
+        $this->chat_attach = $chat_attach;
+        $this->chatRoomId = $chatRoomId;
+        $this->userID = $userID;
+        $this->sender = $sender;
+        $this->created_at = $created_at;
     }
 
     public function broadcastOn()
     {
-        return ['chat-rooms' . $this->userId];
+        return ['chat' . $this->userID];
     }
 
     public function broadcastAs()
     {
-        return 'create-chat-room';
+        return 'message';
     }
 }

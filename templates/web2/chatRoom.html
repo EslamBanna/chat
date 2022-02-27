@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>Chat API Project</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 </head>
@@ -33,78 +34,13 @@
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
             </header>
             <ul id="chat">
-                <li class="you">
-                    <div class="entete">
-                        <span class="status green"></span>
-                        <h2>Vincent</h2>
-                        <h3>10:12AM, Today</h3>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                    </div>
-                </li>
-                <li class="me">
-                    <div class="entete">
-                        <h3>10:12AM, Today</h3>
-                        <h2>Vincent</h2>
-                        <span class="status blue"></span>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                    </div>
-                </li>
-                <li class="me">
-                    <div class="entete">
-                        <h3>10:12AM, Today</h3>
-                        <h2>Vincent</h2>
-                        <span class="status blue"></span>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        OK
-                    </div>
-                </li>
-                <li class="you">
-                    <div class="entete">
-                        <span class="status green"></span>
-                        <h2>Vincent</h2>
-                        <h3>10:12AM, Today</h3>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                    </div>
-                </li>
-                <li class="me">
-                    <div class="entete">
-                        <h3>10:12AM, Today</h3>
-                        <h2>Vincent</h2>
-                        <span class="status blue"></span>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                    </div>
-                </li>
-                <li class="me">
-                    <div class="entete">
-                        <h3>10:12AM, Today</h3>
-                        <h2>Vincent</h2>
-                        <span class="status blue"></span>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                        OK
-                    </div>
-                </li>
+                
             </ul>
             <footer>
-                <textarea placeholder="Type your message"></textarea>
+                <textarea placeholder="Type your message" id="messageArea"></textarea>
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">
-                <a href="#">Send</a>
+                <a onclick="sendMessage()">Send</a>
             </footer>
         </main>
     </div>

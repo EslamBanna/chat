@@ -7,6 +7,7 @@ use App\Models\ChatRoom;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ChatRoomController extends Controller
@@ -53,11 +54,23 @@ class ChatRoomController extends Controller
             if ($chat_room) {
                 return $this->returnError(206, 'this chat room is already exist');
             }
-            ChatRoom::create([
+            $chat_room = ChatRoom::create([
                 'f_user_id' => Auth()->user()->id,
                 's_user_id' => $s_user_id
             ]);
-            event(new CreateNewChatRoom($s_user_id));
+            $chat_room_data_to_reciver = [
+                'chat_room_id' => $chat_room['id'],
+                'lastUpdate' => $chat_room['updated_at'],
+                'user' => $chat_room->secondUser
+            ];
+
+            $chat_room_data_to_sender = [
+                'chat_room_id' => $chat_room['id'],
+                'lastUpdate' => $chat_room['updated_at'],
+                'user' => Auth()->user()
+            ];
+            event(new CreateNewChatRoom(Auth()->user()->id, $chat_room_data_to_reciver));
+            event(new CreateNewChatRoom($s_user_id, $chat_room_data_to_sender));
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             return $this->returnError(201, $e->getMessage());
