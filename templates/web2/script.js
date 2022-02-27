@@ -42,7 +42,7 @@ function showData() {
         for (var i = 0; i < data["data"].length; i++) {
             var lastUpdate = new Date(data["data"][i]['updated_at']);
             if (data["data"][i]['second_user'] == null) {
-                chatRoom += `  <li onclick="openChat('${data["data"][i]['first_user']['name']}', '${data["data"][i]['first_user']['image']}')">
+                chatRoom += `  <li onclick="openChat('${data["data"][i]['first_user']['name']}', '${data["data"][i]['first_user']['image']}', '${data["data"][i]['id']}')">
             <img class="chatRoomImage" src="${data["data"][i]['first_user']['image']}" alt="">
             <div>
                 <h2>${data["data"][i]['first_user']['name']}</h2>
@@ -54,7 +54,7 @@ function showData() {
         </li>`;
 
             } else {
-                chatRoom += `  <li onclick="openChat('${data["data"][i]['second_user']['name']}', '${data["data"][i]['second_user']['image']}')" >
+                chatRoom += `  <li onclick="openChat('${data["data"][i]['second_user']['name']}', '${data["data"][i]['second_user']['image']}', '${data["data"][i]['id']}')" >
             <img class="chatRoomImage" src="${data["data"][i]['second_user']['image']}" alt="">
             <div>
                 <h2>${data["data"][i]['second_user']['name']}</h2>
@@ -72,9 +72,11 @@ function showData() {
     chatRooms.innerHTML = chatRoom;
 
 }
-function openChat(userName, userImage) {
+function openChat(userName, userImage, chatId) {
     SecondUserName.innerHTML = userName;
     document.getElementById('secondUserImage').setAttribute('src', userImage);
+    // alert(chatId);
+    // get messages()
 }
 
 var createNewChatBtnBool = false;
@@ -131,6 +133,7 @@ var pusher = new Pusher('8b64cbfa68e06a8ae30e', {
 var channel = pusher.subscribe('chat-rooms');
 channel.bind('create-chat-room', function (data) {
     // alert(JSON.stringify(data));
+    // we must check if the data to him or another one
     getChatRooms();
     setTimeout(showData, 1200);
 });

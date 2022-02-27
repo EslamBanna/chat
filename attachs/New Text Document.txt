@@ -2,3 +2,5 @@ pusher
 email = delap60268@robhung.com
 pass = @Asdfghjkl123
 project name = chat-multiway
+https://dashboard.pusher.com/apps/1353973/getting_started
+#########################
