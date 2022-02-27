@@ -19,14 +19,15 @@ class CreateNewChatRoom implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+    public $userId;
+    public function __construct($userId)
     {
-        //
+        $this->userId = $userId;
     }
 
     public function broadcastOn()
     {
-        return ['chat-rooms'];
+        return ['chat-rooms' . $this->userId];
     }
 
     public function broadcastAs()

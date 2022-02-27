@@ -1,7 +1,10 @@
 var data;
 var user;
+var userID = 3;
+var authenticationToken = "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL";
 var myHeaders = new Headers();
-myHeaders.append("Authorization", "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL");
+// var channel = 'chat-rooms';
+myHeaders.append("Authorization", authenticationToken);
 window.onload = () => {
     getChatRooms();
     var requestOptions = {
@@ -13,6 +16,7 @@ window.onload = () => {
         .then(response => response.text())
         .then(function result(x) {
             user = JSON.parse(x);
+            channel += user['id'];
         })
         .catch(error => console.log('error', error));
     setTimeout(showData, 1200);
@@ -24,7 +28,6 @@ function getChatRooms() {
         headers: myHeaders,
         redirect: 'follow'
     };
-    var test;
     fetch("http://127.0.0.1:8000/api/auth/get-chat-rooms", requestOptions)
         .then(response => response.text())
         .then(function result(x) {
@@ -96,7 +99,7 @@ creatNewChatRoomAddBtn.onclick = function () {
     var phoneOrEmail = creatNewChatRoomPhoneOrEmail.value;
 
     var myHeaders_2 = new Headers();
-    myHeaders_2.append("Authorization", "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL");
+    myHeaders_2.append("Authorization", authenticationToken);
     myHeaders_2.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
@@ -130,10 +133,11 @@ var pusher = new Pusher('8b64cbfa68e06a8ae30e', {
     cluster: 'eu'
 });
 
-var channel = pusher.subscribe('chat-rooms');
+var channel = pusher.subscribe('chat-rooms'+userID);
 channel.bind('create-chat-room', function (data) {
     // alert(JSON.stringify(data));
     // we must check if the data to him or another one
+    console.log('to me 3');
     getChatRooms();
     setTimeout(showData, 1200);
 });

@@ -57,7 +57,7 @@ class ChatRoomController extends Controller
                 'f_user_id' => Auth()->user()->id,
                 's_user_id' => $s_user_id
             ]);
-            event(new CreateNewChatRoom());
+            event(new CreateNewChatRoom($s_user_id));
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             return $this->returnError(201, $e->getMessage());
