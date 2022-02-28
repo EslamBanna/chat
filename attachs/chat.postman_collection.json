@@ -18,12 +18,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "eslam elbanna3",
+									"value": "eslam elbanna4",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "eslamelbanna04@gmail.com",
+									"value": "eslamelbanna05@gmail.com",
 									"type": "text"
 								},
 								{
@@ -92,7 +92,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 2|XHWQn4j956vtEqdwm8ssrHbHdh0GvK6IIWJuoFQX",
 								"type": "text"
 							}
 						],
@@ -117,7 +117,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
 								"type": "text"
 							}
 						],
@@ -149,13 +149,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"s_user_id\": 3\r\n}",
+							"raw": "{\r\n    \"phoneOrEmail\": \"eslamelbanna02@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +184,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
 								"type": "text"
 							}
 						],
@@ -215,7 +215,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
 								"type": "text"
 							}
 						],
@@ -235,7 +235,7 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:8000/api/auth/send-message/2",
+							"raw": "localhost:8000/api/auth/send-message/76",
 							"host": [
 								"localhost"
 							],
@@ -244,7 +244,7 @@
 								"api",
 								"auth",
 								"send-message",
-								"2"
+								"76"
 							]
 						}
 					},
@@ -257,12 +257,12 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|5LneDhnaNi0NbbYZ4v4hRUJIrhxB3FDRGkLTXEpJ",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "localhost:8000/api/auth/get-messages/2",
+							"raw": "localhost:8000/api/auth/get-messages/76",
 							"host": [
 								"localhost"
 							],
@@ -271,7 +271,34 @@
 								"api",
 								"auth",
 								"get-messages",
-								"2"
+								"76"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get messages count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/api/auth/get-messages-counts/76",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"get-messages-counts",
+								"76"
 							]
 						}
 					},

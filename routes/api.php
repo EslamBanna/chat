@@ -35,5 +35,6 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'auth'], function () {
 
     Route::post('/send-message/{chatRoomId}',[MessageController::class,'sendMessage']);
     Route::get('/get-messages/{chatRoomId}',[MessageController::class,'getMessages']);
+    Route::get('/get-messages-counts/{chatRoomId}',[MessageController::class,'getMessagesCounts']);
 
 });

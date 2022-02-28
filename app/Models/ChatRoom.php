@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ChatRoom extends Model
 {
     use HasFactory;
-    protected $fillable = ['f_user_id', 's_user_id'];
+    protected $fillable = ['f_user_id', 's_user_id', 'updated_at'];
     
     public function firstUser()
     {

@@ -68,10 +68,29 @@ function showData() {
 }
 function openChat(userName, userImage, chatId) {
     currentChatRoomId = chatId;
-    // alert(currentChatRoomId);
     SecondUserName.innerHTML = userName;
     document.getElementById('secondUserImage').setAttribute('src', userImage);
+    getMessagesCount(chatId);
     getMessages(chatId, userName);
+}
+
+function getMessagesCount(chatId) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", authenticationToken);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch(domain + "api/auth/get-messages-counts/" + chatId, requestOptions)
+        .then(response => response.text())
+        .then(function (x) {
+            var result = JSON.parse(x);
+            chatMessagesCount.innerHTML = result["data"];
+        })
+        .catch(error => console.log('error', error));
 }
 
 function getMessages(chatId, userName) {
@@ -140,7 +159,7 @@ function sendMessage() {
     fetch(domain + "api/auth/send-message/" + currentChatRoomId, requestOptions)
         .then(response => response.text())
         .then(function (msg) {
-            // alert(msg);
+            document.getElementById('messageArea').value = "";
             console.log(msg);
         })
         .catch(error => console.log('error', error));
@@ -198,7 +217,7 @@ Pusher.logToConsole = true;
 var pusher = new Pusher('8b64cbfa68e06a8ae30e', {
     cluster: 'eu'
 });
-
+// ############ chat rooms channel ##########
 var channel = pusher.subscribe('chat-rooms' + userID);
 channel.bind('create-chat-room', function (data) {
     // alert(JSON.stringify(data));
@@ -218,17 +237,14 @@ channel.bind('create-chat-room', function (data) {
 });
 
 // ###############################
+
+// ############ send message channel ##########
 var channel_message = pusher.subscribe('chat' + userID);
 channel_message.bind('message', function (fetch_message) {
-    // alert(JSON.stringify(data));
     var messageTime = fetch_message['created_at'];
     console.log('to me 3');
     var newMessage = ``;
-    // if()
-    // var msg = JSON.parse(fetch_message);
-
     if (fetch_message['sender'] == 1) {
-        alert('meee')
         newMessage = `<li class="me">
         <div class="entete">
             <h3>${messageTime}</h3>
@@ -240,11 +256,10 @@ channel_message.bind('message', function (fetch_message) {
         </div>
     </li>`;
     } else {
-        alert("not meee")
         newMessage = `<li class="you">
         <div class="entete">
         <span class="status blue"></span>
-        <h2>${userName}</h2>
+        <h2>${SecondUserName.innerHTML}</h2>
             <h3>${messageTime}</h3>
         </div>
         <div class="triangle"></div>
@@ -254,7 +269,6 @@ channel_message.bind('message', function (fetch_message) {
     </li>`;
 
     }
-
     messages.innerHTML += newMessage;
-
 });
+// #############################################
