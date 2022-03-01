@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('sender_id');
             $table->string('message')->nullable();
             $table->string('attach')->nullable();
+            $table->enum('msg_status',['not_received', 'received', 'seen'])->default('not_received');
             $table->timestamps();
         });
     }

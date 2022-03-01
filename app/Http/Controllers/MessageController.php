@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\SendMessage;
 use App\Models\ChatRoom;
 use App\Models\Message;
+use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,10 +43,13 @@ class MessageController extends Controller
             } else {
                 $s_user_id = $chatRoom['f_user_id'];
             }
+            $s_user = User::find($s_user_id);
+            $s_user_name = $s_user['name'];
+            $s_user_image = $s_user['image'];
             // fire event
             DB::commit();
-            event(new SendMessage($request->message, $chat_attach, $chatRoomId, Auth()->user()->id, 1, $message['created_at']));
-            event(new SendMessage($request->message, $chat_attach, $chatRoomId, $s_user_id, 0, $message['created_at']));
+            event(new SendMessage($request->message, $chat_attach, $chatRoomId, Auth()->user()->id,  $s_user_name, $s_user_image, 1, $message['created_at']));
+            event(new SendMessage($request->message, $chat_attach, $chatRoomId, $s_user_id, Auth()->user()->name, Auth()->user()->image, 0, $message['created_at']));
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
             DB::rollback();

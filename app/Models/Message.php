@@ -13,6 +13,7 @@ class Message extends Model
         'sender_id',
         'message',
         'attach',
+        'msg_status'
     ];
 
     public function chatRoom()
