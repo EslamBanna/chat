@@ -37,7 +37,7 @@ function showData() {
         for (var i = 0; i < userChatRooms["data"].length; i++) {
             var lastUpdate = new Date(userChatRooms["data"][i]['updated_at']);
             if (userChatRooms["data"][i]['second_user'] == null) {
-                chatRoom += `  <li onclick="openChat('${userChatRooms["data"][i]['first_user']['name']}', '${userChatRooms["data"][i]['first_user']['image']}', '${userChatRooms["data"][i]['id']}')">
+                chatRoom += `<li id="chatRoom${userChatRooms["data"][i]['id']}" onclick="openChat('${userChatRooms["data"][i]['first_user']['name']}', '${userChatRooms["data"][i]['first_user']['image']}', '${userChatRooms["data"][i]['id']}')">
             <img class="chatRoomImage" src="${userChatRooms["data"][i]['first_user']['image']}" alt="">
             <div>
                 <h2>${userChatRooms["data"][i]['first_user']['name']}</h2>
@@ -49,7 +49,7 @@ function showData() {
         </li>`;
 
             } else {
-                chatRoom += `  <li onclick="openChat('${userChatRooms["data"][i]['second_user']['name']}', '${userChatRooms["data"][i]['second_user']['image']}', '${userChatRooms["data"][i]['id']}')" >
+                chatRoom += `  <li id="chatRoom${userChatRooms["data"][i]['id']}" onclick="openChat('${userChatRooms["data"][i]['second_user']['name']}', '${userChatRooms["data"][i]['second_user']['image']}', '${userChatRooms["data"][i]['id']}')" >
             <img class="chatRoomImage" src="${userChatRooms["data"][i]['second_user']['image']}" alt="">
             <div>
                 <h2>${userChatRooms["data"][i]['second_user']['name']}</h2>
@@ -241,13 +241,15 @@ channel.bind('create-chat-room', function (data) {
 // ############ send message channel ##########
 var channel_message = pusher.subscribe('chat' + userID);
 channel_message.bind('message', function (fetch_message) {
-    var messageTime = fetch_message['created_at'];
-    console.log('to me 3');
-    var newMessage = ``;
-    if (fetch_message['sender'] == 1) {
-        newMessage = `<li class="me">
+    console.log('to me 2');
+    if (currentChatRoomId == fetch_message['chatRoomId']) {
+        var messageTime = new Date(fetch_message['created_at']);
+        chatMessagesCount.innerHTML = parseInt(chatMessagesCount.innerHTML) + 1;
+        var newMessage = ``;
+        if (fetch_message['sender'] == 1) {
+            newMessage = `<li class="me">
         <div class="entete">
-            <h3>${messageTime}</h3>
+            <h3>${messageTime.toDateString()}</h3>
             <h2>ME </h2>
             <span class="status blue"></span>
         </div>
@@ -255,20 +257,39 @@ channel_message.bind('message', function (fetch_message) {
         ${fetch_message['message']}
         </div>
     </li>`;
-    } else {
-        newMessage = `<li class="you">
+        } else {
+            newMessage = `<li class="you">
         <div class="entete">
         <span class="status blue"></span>
         <h2>${SecondUserName.innerHTML}</h2>
-            <h3>${messageTime}</h3>
+            <h3>${messageTime.toDateString()}</h3>
         </div>
         <div class="triangle"></div>
         <div class="message">
         ${fetch_message['message']}
         </div>
     </li>`;
-
+        }
+        messages.innerHTML += newMessage;
     }
-    messages.innerHTML += newMessage;
+
+    var TheChatRoomItemList = document.getElementById('chatRoom' + fetch_message['chatRoomId']);
+    var TheChatRoomItemListContent = TheChatRoomItemList.innerHTML;
+    // console.log(TheChatRoomItemListContent);
+    TheChatRoomItemList.style.display = 'none';
+
+
+    var lastUpdate = new Date(fetch_message["chat_room_data"]['lastUpdate']);
+    var newChatRoom = `  <li onclick="openChat('${data['chat_room_data']["user"]['name']}', '${data['chat_room_data']["user"]['image']}', '${data['chat_room_data']['chat_room_id']}')">
+    <img class="chatRoomImage" src="${data['chat_room_data']['user']['image']}" alt="">
+    <div>
+        <h2>${data['chat_room_data']["user"]['name']}</h2>
+        <h3>
+            <span class="status orange"></span>
+            Last Update: ${lastUpdate.toDateString()}
+        </h3>
+    </div>
+</li>`;
+    chatRooms.innerHTML = newChatRoom + chatRooms.innerHTML;
 });
 // #############################################
