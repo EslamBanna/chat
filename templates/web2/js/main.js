@@ -56,6 +56,16 @@
 
 })(jQuery);
 
+window.onload = () => {
+    var userToken = window.localStorage.getItem('user-token-banda-chat-application');
+    // alert(test);
+    if (userToken != null) {
+        // alert('no');
+        window.location.href = 'chatRoom.html';
+    }
+}
+
+
 var domain = "http://127.0.0.1:8000/";
 
 function login() {
@@ -83,8 +93,12 @@ function login() {
             var result = JSON.parse(x);
             if (result['status'] == true) {
                 // alert('go on')
-                window.localStorage.setItem('token', result['data']['token']);
-                window.localStorage.setItem('userID', result['data']['user']['id']);
+                window.localStorage.setItem('user-token-banda-chat-application', result['data']['token']);
+                window.localStorage.setItem('user-id-banda-chat-application', result['data']['user']['id']);
+                window.localStorage.setItem('user-name-banda-chat-application', result['data']['user']['name']);
+                window.localStorage.setItem('user-email-banda-chat-application', result['data']['user']['email']);
+                window.localStorage.setItem('user-phone-banda-chat-application', result['data']['user']['phone']);
+                window.localStorage.setItem('user-image-banda-chat-application', result['data']['user']['image']);
                 // alert(result['data']['token']);
                 // alert(window.localStorage.getItem('token'));
                 window.location.href = 'chatRoom.html';
