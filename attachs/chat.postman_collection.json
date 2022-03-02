@@ -64,7 +64,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"eslamelbanna02@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"eslamelbanna01@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -149,13 +149,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
+								"value": "Bearer 4|SOclop5rca82xTyParXVio6cgEmuotJL9HdMgc4h",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"phoneOrEmail\": \"eslamelbanna02@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"phoneOrEmail\": \"eslamelbanna04@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +184,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
+								"value": "Bearer 4|SOclop5rca82xTyParXVio6cgEmuotJL9HdMgc4h",
 								"type": "text"
 							}
 						],
@@ -215,7 +215,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
+								"value": "Bearer 4|SOclop5rca82xTyParXVio6cgEmuotJL9HdMgc4h",
 								"type": "text"
 							}
 						],
@@ -235,7 +235,7 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:8000/api/auth/send-message/76",
+							"raw": "localhost:8000/api/auth/send-message/22",
 							"host": [
 								"localhost"
 							],
@@ -244,7 +244,7 @@
 								"api",
 								"auth",
 								"send-message",
-								"76"
+								"22"
 							]
 						}
 					},
@@ -257,12 +257,12 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer 1|agiZowgjPsXTEKat75nwGXORNvxl83fcH6dSD8XL",
+								"value": "Bearer 4|SOclop5rca82xTyParXVio6cgEmuotJL9HdMgc4h",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "localhost:8000/api/auth/get-messages/76",
+							"raw": "localhost:8000/api/auth/get-messages/22",
 							"host": [
 								"localhost"
 							],
@@ -271,7 +271,7 @@
 								"api",
 								"auth",
 								"get-messages",
-								"76"
+								"22"
 							]
 						}
 					},
@@ -299,6 +299,33 @@
 								"auth",
 								"get-messages-counts",
 								"76"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make seen chat",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 4|SOclop5rca82xTyParXVio6cgEmuotJL9HdMgc4h",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/api/auth/make-seen-chat/20",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"make-seen-chat",
+								"20"
 							]
 						}
 					},

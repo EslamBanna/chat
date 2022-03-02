@@ -22,6 +22,12 @@ var notSeenIcon = `<svg width="16" height="16" fill="currentColor" class="bi bi-
 var seenIcon = `<svg width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle seenIcon" viewBox="0 0 16 16">
 <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
 </svg>`;
+var GmailIcon = `<svg width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+<path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+</svg>`;
+var SMSIcon = `<svg width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+<path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+</svg>`;
 var myHeaders = new Headers();
 myHeaders.append("Authorization", authenticationToken);
 window.onload = () => {
@@ -136,10 +142,8 @@ function getMessages(chatId, userName) {
                 var seen_icon = "";
                 if (fetch_messages["data"][i]['sender_id'] == userID) {
                     if (fetch_messages["data"][i]['msg_status'] == 'not_seen') {
-                        // alert('not ssen')
                         seen_icon = notSeenIcon
                     } else {
-                        // alert('seen')
                         seen_icon = seenIcon;
                     }
                     chatContent += `<li class="me">
@@ -152,15 +156,8 @@ function getMessages(chatId, userName) {
                     ${fetch_messages["data"][i]['message']}
                     <hr class = "horizontalStatus" />
                     ${seen_icon}
-        
-<svg width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
-</svg>
-
-
-<svg width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
-  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-</svg>
+                    ${GmailIcon}
+                    ${SMSIcon}
                     </div>
                 </li>`;
 
@@ -176,16 +173,8 @@ function getMessages(chatId, userName) {
                     ${fetch_messages["data"][i]['message']}
                     <hr class = "horizontalStatus" />
                     ${seenIcon}
-
-<svg width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
-</svg>
-
-
-<svg width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
-  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-</svg>
-                    </div>
+                    ${GmailIcon}
+                    ${SMSIcon}
                 </li>`;
                 }
             }
@@ -295,7 +284,6 @@ var pusher = new Pusher('8b64cbfa68e06a8ae30e', {
 // ############ chat rooms channel ##########
 var channel = pusher.subscribe('chat-rooms' + userID);
 channel.bind('create-chat-room', function (data) {
-    // alert(JSON.stringify(data));
     console.log('to me 1');
     var lastUpdate = new Date(data["chat_room_data"]['lastUpdate']);
     var newChatRoom = ` <li id="chatRoom${data['chat_room_data']['chat_room_id']}" onclick="openChat('${data['chat_room_data']["user"]['name']}', '${data['chat_room_data']["user"]['image']}', '${data['chat_room_data']['chat_room_id']}')">
@@ -332,15 +320,8 @@ channel_message.bind('message', function (fetch_message) {
         ${fetch_message['message']}
         <hr />
         ${notSeenIcon}
-
-                      <svg width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
-</svg>
-
-
-<svg width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
-  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-</svg>
+        ${GmailIcon}
+        ${SMSIcon}
         </div>
     </li>`;
         } else {
@@ -354,16 +335,9 @@ channel_message.bind('message', function (fetch_message) {
         <div class="message">
         ${fetch_message['message']}
         <hr />
-    ${seenIcon}
-
-      <svg width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-  <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
-</svg>
-
-
-<svg width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
-  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
-</svg>
+        ${seenIcon}
+        ${GmailIcon}
+        ${SMSIcon}
         </div>
     </li>`;
         }
@@ -372,29 +346,27 @@ channel_message.bind('message', function (fetch_message) {
 
     var TheChatRoomItemList = document.getElementById('chatRoom' + fetch_message['chatRoomId']);
     var TheChatRoomItemListContent = TheChatRoomItemList.innerHTML;
-    // console.log(TheChatRoomItemListContent);
+    TheChatRoomItemList.setAttribute('id', 'broken' + Math.floor((Math.random() * 10) + 1));
     TheChatRoomItemList.style.display = 'none';
 
     var newChatRoom = `<li id="chatRoom${fetch_message['chatRoomId']}" onclick="openChat('${fetch_message['user_name']}', '${fetch_message['user_image']}', '${fetch_message['chatRoomId']}')">
     ${TheChatRoomItemListContent}
 </li>`;
     chatRooms.innerHTML = newChatRoom + chatRooms.innerHTML;
+    if (fetch_message['chatRoomId'] == currentChatRoomId) {
+        document.getElementById('chatRoom' + currentChatRoomId).style.backgroundColor = "white";
+        document.getElementById('chatRoomUserName' + currentChatRoomId).style.color = "black";
+    }
 });
 // #############################################
 
 // ############ seen chat messages channel ######
 var channel = pusher.subscribe('chat-room' + userID);
 channel.bind('chat-room-seen', function (data) {
-    console.log('to meeeeeeee');
-    // bi-arrow-right-circle
-    // bi-arrow-right-circle-fill
     var seenElements = document.getElementsByClassName('notSeenIcon');
-    for(var i = 0; i< seenElements.length;i++){
-        // seenElements[i].style.display = 'none';
-        // document.getElementsByClassName('message')[i].innerHTML += seenIcon;
+    for (var i = 0; i < seenElements.length; i++) {
         seenElements[i].innerHTML = `<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>`;
-        // seenElements[i].setAttribute('class', 'bi-arrow-right-circle-fill');
-        }
+    }
 });
 
 // #############################################
