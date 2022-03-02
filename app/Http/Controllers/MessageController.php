@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatSeen;
 use App\Events\SendMessage;
 use App\Models\ChatRoom;
 use App\Models\Message;
@@ -81,6 +82,36 @@ class MessageController extends Controller
             $messages_count = Message::where('chat_room_id', $chatRoomId)->count();
             return $this->returnData('data', $messages_count);
         } catch (\Exception $e) {
+            return $this->returnError(201, $e->getMessage());
+        }
+    }
+
+    public function makeSeenChat($chatRoomId)
+    {
+        DB::beginTransaction();
+        try {
+            $chatRoom = ChatRoom::find($chatRoomId);
+            if (!$chatRoom) {
+                return $this->returnError(202, 'this chat rooms is not available');
+            }
+            // ChatRoom::whereHas([''])
+            Message::where('chat_room_id', $chatRoomId)
+            ->where('sender_id', '!=', Auth()->user()->id)
+            ->where('msg_status', '=', 'not_seen')
+            ->update([
+                'msg_status' => 'seen'
+            ]);
+            $s_user_id = 0;
+            if ($chatRoom['s_user_id'] == Auth()->user()->id) {
+                $s_user_id = $chatRoom['f_user_id'];
+            } else {
+                $s_user_id = $chatRoom['s_user_id'];
+            }
+            DB::commit();
+            event(new ChatSeen($chatRoomId, $s_user_id));
+            return $this->returnSuccessMessage('success');
+        } catch (\Exception $e) {
+            DB::rollBack();
             return $this->returnError(201, $e->getMessage());
         }
     }
