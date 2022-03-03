@@ -30,6 +30,7 @@ main{
 	display:inline-block;
 	font-size:15px;
 	vertical-align:top;
+	
 }
 
 aside header{
@@ -147,6 +148,8 @@ main header h3{
 	height:535px;
 	border-top:2px solid #fff;
 	border-bottom:2px solid #fff;
+	background-image: url('../images/test.png');
+	background-size: cover;
 }
 #chat li{
 	padding:10px 30px;
@@ -297,4 +300,7 @@ main footer a{
 	margin-right: auto;
 	border-radius: 50%;
 	/* align-items: center; */
+}
+.chatImage{
+	width: 100%;
 }

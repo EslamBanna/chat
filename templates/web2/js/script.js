@@ -30,17 +30,18 @@ var SMSIcon = `<svg width="16" height="16" fill="currentColor" class="bi bi-enve
 </svg>`;
 var myHeaders = new Headers();
 myHeaders.append("Authorization", authenticationToken);
+var requestOptionsGET = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+};
+
 window.onload = () => {
     getChatRooms();
 };
 
 function getChatRooms() {
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-    fetch(domain + "api/auth/get-chat-rooms", requestOptions)
+    fetch(domain + "api/auth/get-chat-rooms", requestOptionsGET)
         .then(response => response.text())
         .then(function result(x) {
             userChatRooms = JSON.parse(x);
@@ -55,7 +56,6 @@ function showData() {
     if (userChatRooms["status"] == false) {
         console.log("empty")
     } else {
-        console.log("full")
         for (var i = 0; i < userChatRooms["data"].length; i++) {
             var lastUpdate = new Date(userChatRooms["data"][i]['updated_at']);
             if (userChatRooms["data"][i]['second_user'] == null) {
@@ -103,16 +103,7 @@ function openChat(userName, userImage, chatId) {
 }
 
 function getMessagesCount(chatId) {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", authenticationToken);
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    fetch(domain + "api/auth/get-messages-counts/" + chatId, requestOptions)
+    fetch(domain + "api/auth/get-messages-counts/" + chatId, requestOptionsGET)
         .then(response => response.text())
         .then(function (x) {
             var result = JSON.parse(x);
@@ -123,16 +114,7 @@ function getMessagesCount(chatId) {
 
 function getMessages(chatId, userName) {
     makeSeenChat(currentChatRoomId);
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", authenticationToken);
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    fetch(domain + "api/auth/get-messages/" + chatId, requestOptions)
+    fetch(domain + "api/auth/get-messages/" + chatId, requestOptionsGET)
         .then(response => response.text())
         .then(function (fetch_messages) {
             fetch_messages = JSON.parse(fetch_messages);
@@ -146,36 +128,74 @@ function getMessages(chatId, userName) {
                     } else {
                         seen_icon = seenIcon;
                     }
-                    chatContent += `<li class="me">
-                    <div class="entete">
-                        <h3>${mesageDate.toDateString()}</h3>
-                        <h2>ME </h2>
-                        <span class="status blue"></span>
-                    </div>
-                    <div class="message">
-                    ${fetch_messages["data"][i]['message']}
-                    <hr class = "horizontalStatus" />
-                    ${seen_icon}
-                    ${GmailIcon}
-                    ${SMSIcon}
-                    </div>
-                </li>`;
-
+                    if (fetch_messages["data"][i]['attach'] == "") {
+                        chatContent += `<li class="me">
+                        <div class="entete">
+                            <h3>${mesageDate.toDateString()}</h3>
+                            <h2>ME </h2>
+                            <span class="status blue"></span>
+                        </div>
+                        <div class="message">
+                        ${fetch_messages["data"][i]['message']}
+                        <hr class = "horizontalStatus"/>
+                        ${seen_icon}
+                        ${GmailIcon}
+                        ${SMSIcon}
+                        </div>
+                    </li>`;
+                    } else {
+                        chatContent += `<li class="me">
+                        <div class="entete">
+                            <h3>${mesageDate.toDateString()}</h3>
+                            <h2>ME </h2>
+                            <span class="status blue"></span>
+                        </div>
+                        <div class="message">
+                        ${fetch_messages["data"][i]['message']}
+                        <br />
+                        <img class="chatImage" src="${fetch_messages["data"][i]['attach']}" alt="chat image"/>
+                        <hr class = "horizontalStatus" />
+                        ${seen_icon}
+                        ${GmailIcon}
+                        ${SMSIcon}
+                        </div>
+                    </li>`;
+                    }
                 } else {
-                    chatContent += `<li class="you">
-                    <div class="entete">
-                        <span class="status green"></span>
-                        <h2>${userName}</h2>
-                        <h3>${mesageDate.toDateString()}</h3>
-                    </div>
-                    <div class="triangle"></div>
-                    <div class="message">
-                    ${fetch_messages["data"][i]['message']}
-                    <hr class = "horizontalStatus" />
-                    ${seenIcon}
-                    ${GmailIcon}
-                    ${SMSIcon}
-                </li>`;
+                    if (fetch_messages["data"][i]['attach'] == "") {
+                        chatContent += `<li class="you">
+                        <div class="entete">
+                            <span class="status green"></span>
+                            <h2>${userName}</h2>
+                            <h3>${mesageDate.toDateString()}</h3>
+                        </div>
+                        <div class="triangle"></div>
+                        <div class="message">
+                        ${fetch_messages["data"][i]['message']}
+                        <hr class = "horizontalStatus" />
+                        ${seenIcon}
+                        ${GmailIcon}
+                        ${SMSIcon}
+                    </li>`;
+                    } else {
+                        chatContent += `<li class="you">
+                        <div class="entete">
+                            <span class="status green"></span>
+                            <h2>${userName}</h2>
+                            <h3>${mesageDate.toDateString()}</h3>
+                        </div>
+                        <div class="triangle"></div>
+                        <div class="message">
+                        ${fetch_messages["data"][i]['message']}
+                        <br />
+                        <img class="chatImage" src="${fetch_messages["data"][i]['attach']}" alt="chat image"/>
+                        <hr class = "horizontalStatus" />
+                        ${seenIcon}
+                        ${GmailIcon}
+                        ${SMSIcon}
+                    </li>`;
+                    }
+
                 }
             }
             messages.innerHTML = chatContent;
@@ -185,40 +205,28 @@ function getMessages(chatId, userName) {
 
 function sendMessage() {
     makeSeenChat(currentChatRoomId);
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", authenticationToken);
 
     var formdata = new FormData();
     formdata.append("message", document.getElementById('messageArea').value);
-    // formdata.append("attach", fileInput.files[0], "/E:/WhatsApp Image 2021-09-25 at 1.33.08 AM.jpeg");
-
-    var requestOptions = {
+    formdata.append("attach", document.getElementById('imageMessage').files[0]);
+    var requestOptionsPostFormData = {
         method: 'POST',
         headers: myHeaders,
         body: formdata,
         redirect: 'follow'
     };
-
-    fetch(domain + "api/auth/send-message/" + currentChatRoomId, requestOptions)
+    fetch(domain + "api/auth/send-message/" + currentChatRoomId, requestOptionsPostFormData)
         .then(response => response.text())
         .then(function (msg) {
             document.getElementById('messageArea').value = "";
-            console.log(msg);
+            document.getElementById('imageMessage').value = null;
         })
         .catch(error => console.log('error', error));
 }
 
 function makeSeenChat(chatId) {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", authenticationToken);
 
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    fetch(domain + "api/auth/make-seen-chat/" + chatId, requestOptions)
+    fetch(domain + "api/auth/make-seen-chat/" + chatId, requestOptionsGET)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
@@ -228,8 +236,6 @@ function logOut() {
     window.localStorage.clear();
     // window.location.href = 'index.html';
 }
-
-// ################# non functions ##################
 
 var createNewChatBtnBool = false;
 createNewChatBtn.onclick = function () {
@@ -247,22 +253,22 @@ createNewChatBtn.onclick = function () {
 creatNewChatRoomAddBtn.onclick = function () {
     var phoneOrEmail = creatNewChatRoomPhoneOrEmail.value;
 
-    var myHeaders_2 = new Headers();
-    myHeaders_2.append("Authorization", authenticationToken);
-    myHeaders_2.append("Content-Type", "application/json");
+    var myHeadersRaw = new Headers();
+    myHeadersRaw.append("Authorization", authenticationToken);
+    myHeadersRaw.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
         "phoneOrEmail": phoneOrEmail
     });
 
-    var requestOptions_2 = {
+    var requestOptionsRaw = {
         method: 'POST',
-        headers: myHeaders_2,
+        headers: myHeadersRaw,
         body: raw,
         redirect: 'follow'
     };
 
-    fetch(domain + "api/auth/create-chat-room", requestOptions_2)
+    fetch(domain + "api/auth/create-chat-room", requestOptionsRaw)
         .then(response => response.text())
         .then(function (x) {
             var res = JSON.parse(x);
@@ -274,17 +280,17 @@ creatNewChatRoomAddBtn.onclick = function () {
         .catch(error => console.log('error', error));
 
 }
+// #############################################
 
-// Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
+// ############ start pusher channels ##########
+Pusher.logToConsole = false;
 
 var pusher = new Pusher('8b64cbfa68e06a8ae30e', {
     cluster: 'eu'
 });
-// ############ chat rooms channel ##########
+// ############ chat rooms channel #############
 var channel = pusher.subscribe('chat-rooms' + userID);
 channel.bind('create-chat-room', function (data) {
-    console.log('to me 1');
     var lastUpdate = new Date(data["chat_room_data"]['lastUpdate']);
     var newChatRoom = ` <li id="chatRoom${data['chat_room_data']['chat_room_id']}" onclick="openChat('${data['chat_room_data']["user"]['name']}', '${data['chat_room_data']["user"]['image']}', '${data['chat_room_data']['chat_room_id']}')">
     <img class="chatRoomImage" src="${data['chat_room_data']['user']['image']}" alt="">
@@ -299,47 +305,86 @@ channel.bind('create-chat-room', function (data) {
     chatRooms.innerHTML = newChatRoom + chatRooms.innerHTML;
 });
 
-// ###############################
+// #############################################
 
-// ############ send message channel ##########
+// ############ send message channel ###########
 var channel_message = pusher.subscribe('chat' + userID);
 channel_message.bind('message', function (fetch_message) {
-    console.log('to me 1');
     if (currentChatRoomId == fetch_message['chatRoomId']) {
         var messageTime = new Date(fetch_message['created_at']);
         chatMessagesCount.innerHTML = parseInt(chatMessagesCount.innerHTML) + 1;
         var newMessage = ``;
         if (fetch_message['sender'] == 1) {
-            newMessage = `<li class="me">
-        <div class="entete">
-            <h3>${messageTime.toDateString()}</h3>
-            <h2>ME </h2>
-            <span class="status blue"></span>
-        </div>
-        <div class="message">
-        ${fetch_message['message']}
-        <hr />
-        ${notSeenIcon}
-        ${GmailIcon}
-        ${SMSIcon}
-        </div>
-    </li>`;
+            if (fetch_message['chat_attach'] == "") {
+                newMessage = `<li class="me">
+                <div class="entete">
+                <h3>${messageTime.toDateString()}</h3>
+                <h2>ME </h2>
+                <span class="status blue"></span>
+                </div>
+                <div class="message">
+                    ${fetch_message['message']}
+                    <hr />
+                    ${notSeenIcon}
+                    ${GmailIcon}
+                    ${SMSIcon}
+                </div>
+            </li>`;
+            } else {
+                newMessage = `<li class="me">
+                <div class="entete">
+                <h3>${messageTime.toDateString()}</h3>
+                <h2>ME </h2>
+                <span class="status blue"></span>
+                </div>
+                <div class="message">
+                    ${fetch_message['message']}
+                    <br />
+                    <img class="chatImage" src="${fetch_message["chat_attach"]}" alt="chat image"/>
+                    <hr />
+                    ${notSeenIcon}
+                    ${GmailIcon}
+                    ${SMSIcon}
+                </div>
+            </li>`;
+            }
         } else {
-            newMessage = `<li class="you">
-        <div class="entete">
-        <span class="status blue"></span>
-        <h2>${SecondUserName.innerHTML}</h2>
-            <h3>${messageTime.toDateString()}</h3>
-        </div>
-        <div class="triangle"></div>
-        <div class="message">
-        ${fetch_message['message']}
-        <hr />
-        ${seenIcon}
-        ${GmailIcon}
-        ${SMSIcon}
-        </div>
-    </li>`;
+            if (fetch_message['chat_attach'] == "") {
+                newMessage = `<li class="you">
+                <div class="entete">
+                <span class="status blue"></span>
+                <h2>${SecondUserName.innerHTML}</h2>
+                    <h3>${messageTime.toDateString()}</h3>
+                </div>
+                <div class="triangle"></div>
+                <div class="message">
+                    ${fetch_message['message']}
+                    <hr />
+                    ${seenIcon}
+                    ${GmailIcon}
+                    ${SMSIcon}
+                </div>
+            </li>`;
+            } else {
+                newMessage = `<li class="you">
+                <div class="entete">
+                <span class="status blue"></span>
+                <h2>${SecondUserName.innerHTML}</h2>
+                    <h3>${messageTime.toDateString()}</h3>
+                </div>
+                <div class="triangle"></div>
+                <div class="message">
+                    ${fetch_message['message']}
+                    <br />
+                    <img class="chatImage" src="${fetch_message["chat_attach"]}" alt="chat image"/>
+                    <hr />
+                    ${seenIcon}
+                    ${GmailIcon}
+                    ${SMSIcon}
+                </div>
+            </li>`;
+            }
+
         }
         messages.innerHTML += newMessage;
     }
@@ -368,5 +413,4 @@ channel.bind('chat-room-seen', function (data) {
         seenElements[i].innerHTML = `<path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>`;
     }
 });
-
 // #############################################

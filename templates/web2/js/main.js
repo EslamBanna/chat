@@ -61,7 +61,7 @@ window.onload = () => {
     // alert(test);
     if (userToken != null) {
         // alert('no');
-        window.location.href = 'chatRoom.html';
+        window.location.href = 'banda.html';
     }
 }
 
@@ -101,7 +101,7 @@ function login() {
                 window.localStorage.setItem('user-image-banda-chat-application', result['data']['user']['image']);
                 // alert(result['data']['token']);
                 // alert(window.localStorage.getItem('token'));
-                window.location.href = 'chatRoom.html';
+                window.location.href = 'banda.html';
             } else {
                 alert('Uncorrect Inputs');
             }

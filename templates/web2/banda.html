@@ -2,8 +2,9 @@
 <html>
 
 <head>
-    <title>Chat API Project</title>
+    <title>Banda Chat Application</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="images/images.png" type="image/x-icon">
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 </head>
 
@@ -39,7 +40,7 @@
         </aside>
         <main>
             <header>
-                <img id="secondUserImage" alt="-">
+                <img id="secondUserImage" src="images/banda.png" alt="-">
                 <div>
                     <h2 id="SecondUserName"></h2>
                     <h3 id="chatMessagesCount">0</h3>
@@ -54,6 +55,7 @@
                 <textarea placeholder="Type your message" id="messageArea"></textarea>
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_picture.png" alt="">
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_file.png" alt="">
+                <input type="file" name="imageMessage" id="imageMessage" />
                 <a onclick="sendMessage()">
                     <img
                         src="https://img.icons8.com/external-kmg-design-flat-kmg-design/50/000000/external-send-user-interface-kmg-design-flat-kmg-design.png" />

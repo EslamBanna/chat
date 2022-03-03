@@ -28,6 +28,8 @@ class MessageController extends Controller
             $chat_attach = "";
             if ($request->hasFile('attach')) {
                 $chat_attach = $this->saveImage($request->attach, 'chat_attachment');
+                $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+                $chat_attach = $actual_link . 'images/chat_attachments/' . $chat_attach;
             }
             $chatRoom->update([
                 'updated_at' => \Carbon\Carbon::now()
@@ -96,11 +98,11 @@ class MessageController extends Controller
             }
             // ChatRoom::whereHas([''])
             Message::where('chat_room_id', $chatRoomId)
-            ->where('sender_id', '!=', Auth()->user()->id)
-            ->where('msg_status', '=', 'not_seen')
-            ->update([
-                'msg_status' => 'seen'
-            ]);
+                ->where('sender_id', '!=', Auth()->user()->id)
+                ->where('msg_status', '=', 'not_seen')
+                ->update([
+                    'msg_status' => 'seen'
+                ]);
             $s_user_id = 0;
             if ($chatRoom['s_user_id'] == Auth()->user()->id) {
                 $s_user_id = $chatRoom['f_user_id'];
