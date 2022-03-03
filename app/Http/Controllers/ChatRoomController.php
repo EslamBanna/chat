@@ -87,16 +87,27 @@ class ChatRoomController extends Controller
                 return $this->returnError(202, 'chat chat_rooms_file is required');
             }
             $chat_rooms_file = $this->saveImage($request->chat_rooms_file, 'chat_rooms_imports');
-            //    read data and insert it
             $contents = File::get(base_path() . '/public/images/chat_rooms_imports/' . $chat_rooms_file);
-            // dd($contents);
-            //    return $contents;
-            $data = [];
-            foreach (explode(',', $contents) as $index=>$row) {
-                // return $row;
-                $data[$index] = $row;
+            $chat_created_success = [];
+            $chat_not_created = [];
+            foreach (explode(',', $contents) as $row) {
+                $colum = "";
+                if (filter_var($row, FILTER_VALIDATE_EMAIL)) {
+                    $colum = 'email';
+                } else {
+                    $colum = 'phone';
+                }
+                $check_user = User::where($colum, $row)->first();
+                if (!$check_user) {
+                    array_push($chat_not_created, $row);
+                } else {
+                    array_push($chat_created_success, $row);
+                    ChatRoom::create([
+                        'f_user_id' => Auth()->user()->id,
+                        's_user_id' => $check_user['id']
+                    ]);
+                }
             }
-            return $data;
             DB::commit();
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
