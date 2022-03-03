@@ -90,6 +90,7 @@ class ChatRoomController extends Controller
             $contents = File::get(base_path() . '/public/images/chat_rooms_imports/' . $chat_rooms_file);
             $chat_created_success = [];
             $chat_not_created = [];
+            $chat_already_created_before = [];
             foreach (explode(',', $contents) as $row) {
                 $colum = "";
                 if (filter_var($row, FILTER_VALIDATE_EMAIL)) {
@@ -101,15 +102,49 @@ class ChatRoomController extends Controller
                 if (!$check_user) {
                     array_push($chat_not_created, $row);
                 } else {
-                    array_push($chat_created_success, $row);
-                    ChatRoom::create([
-                        'f_user_id' => Auth()->user()->id,
-                        's_user_id' => $check_user['id']
-                    ]);
+                    $check_if_chat_room_exist = ChatRoom::where([
+                        ['f_user_id', '=', Auth()->user()->id],
+                        ['s_user_id', '=', $check_user['id']]
+                    ])
+                        ->orWhere([
+                            ['f_user_id', '=', $check_user['id']],
+                            ['s_user_id', '=', Auth()->user()->id]
+                        ])->first();
+                    if ($check_if_chat_room_exist) {
+                        array_push($chat_already_created_before, $row);
+                    } else {
+                        if ($check_user['id'] == Auth()->user()->id) {
+                            array_push($chat_not_created, $row);
+                        } else {
+                            $chat_room = ChatRoom::create([
+                                'f_user_id' => Auth()->user()->id,
+                                's_user_id' => $check_user['id']
+                            ]);
+                            $chat_room_data_to_reciver = [
+                                'chat_room_id' => $chat_room['id'],
+                                'lastUpdate' => $chat_room['updated_at'],
+                                'user' => $chat_room->secondUser
+                            ];
+
+                            $chat_room_data_to_sender = [
+                                'chat_room_id' => $chat_room['id'],
+                                'lastUpdate' => $chat_room['updated_at'],
+                                'user' => Auth()->user()
+                            ];
+                            array_push($chat_created_success, $row);
+                            event(new CreateNewChatRoom(Auth()->user()->id, $chat_room_data_to_reciver));
+                            event(new CreateNewChatRoom($check_user['id'], $chat_room_data_to_sender));
+                        }
+                    }
                 }
             }
+            $data = [
+                'chat_created_success' => $chat_created_success,
+                'chat_already_created_before' => $chat_already_created_before,
+                'chat_not_created' => $chat_not_created
+            ];
             DB::commit();
-            return $this->returnSuccessMessage('success');
+            return $this->returnData('data', $data);
         } catch (\Exception $e) {
             DB::rollback();
             return $this->returnError(201, $e->getMessage());

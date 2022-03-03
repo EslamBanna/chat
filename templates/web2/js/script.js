@@ -250,7 +250,7 @@ createNewChatBtn.onclick = function () {
     }
     createNewChatBtnBool = !createNewChatBtnBool;
 }
-creatNewChatRoomAddBtn.onclick = function () {
+function creatNewChatRoomAddButton() {
     var phoneOrEmail = creatNewChatRoomPhoneOrEmail.value;
     var chatRoomsImportFile = document.getElementById('addNewChatRoomsFile');
     var requestOptions;
@@ -292,8 +292,10 @@ creatNewChatRoomAddBtn.onclick = function () {
             .then(function (x) {
                 var res = JSON.parse(x);
                 creatNewChatRoomPhoneOrEmail.value = "";
+                chatRoomsImportFile.value = null;
                 if (res['status'] == false) {
                     alert(res['msg']);
+                    console.log(x);
                 }
             })
             .catch(error => console.log('error', error));
@@ -314,7 +316,7 @@ channel.bind('create-chat-room', function (data) {
     var newChatRoom = ` <li id="chatRoom${data['chat_room_data']['chat_room_id']}" onclick="openChat('${data['chat_room_data']["user"]['name']}', '${data['chat_room_data']["user"]['image']}', '${data['chat_room_data']['chat_room_id']}')">
     <img class="chatRoomImage" src="${data['chat_room_data']['user']['image']}" alt="">
     <div>
-        <h2>${data['chat_room_data']["user"]['name']}</h2>
+        <h2 id="chatRoomUserName${data["chat_room_data"]['chat_room_id']}">${data['chat_room_data']["user"]['name']}</h2>
         <h3>
             <span class="status orange"></span>
             Last Update: ${lastUpdate.toDateString()}
