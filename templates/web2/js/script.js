@@ -252,33 +252,52 @@ createNewChatBtn.onclick = function () {
 }
 creatNewChatRoomAddBtn.onclick = function () {
     var phoneOrEmail = creatNewChatRoomPhoneOrEmail.value;
-
-    var myHeadersRaw = new Headers();
-    myHeadersRaw.append("Authorization", authenticationToken);
-    myHeadersRaw.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-        "phoneOrEmail": phoneOrEmail
-    });
-
-    var requestOptionsRaw = {
-        method: 'POST',
-        headers: myHeadersRaw,
-        body: raw,
-        redirect: 'follow'
-    };
-
-    fetch(domain + "api/auth/create-chat-room", requestOptionsRaw)
-        .then(response => response.text())
-        .then(function (x) {
-            var res = JSON.parse(x);
-            creatNewChatRoomPhoneOrEmail.value = "";
-            if (res['status'] == false) {
-                alert(res['msg']);
-            }
-        })
-        .catch(error => console.log('error', error));
-
+    var chatRoomsImportFile = document.getElementById('addNewChatRoomsFile');
+    var requestOptions;
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", authenticationToken);
+    var tag = true;
+    var completePath = "";
+    if (phoneOrEmail == "" && chatRoomsImportFile.value == "") {
+        alert('invalid input');
+        tag = false;
+    } else if (phoneOrEmail == "") {
+        // alert('file')
+        var formdata = new FormData();
+        formdata.append("chat_rooms_file", chatRoomsImportFile.files[0]);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+        completePath = "import-chat-rooms";
+    } else if (chatRoomsImportFile.value == "") {
+        // alert('phone')
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "phoneOrEmail": phoneOrEmail
+        });
+        requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        completePath = "create-chat-room";
+    }
+    if (tag) {
+        fetch(domain + "api/auth/" + completePath, requestOptions)
+            .then(response => response.text())
+            .then(function (x) {
+                var res = JSON.parse(x);
+                creatNewChatRoomPhoneOrEmail.value = "";
+                if (res['status'] == false) {
+                    alert(res['msg']);
+                }
+            })
+            .catch(error => console.log('error', error));
+    }
 }
 // #############################################
 

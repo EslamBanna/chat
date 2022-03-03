@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'auth'], function () {
     Route::get('/get-user-info/{userId}',[UserController::class,'getUserInfo']);
 
     Route::post('/create-chat-room',[ChatRoomController::class,'createChatRoom']);
+    Route::post('/import-chat-rooms',[ChatRoomController::class,'importChatRooms']);
     Route::get('/get-chat-rooms',[ChatRoomController::class,'getChatRooms']);
 
 

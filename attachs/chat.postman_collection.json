@@ -202,6 +202,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "import chat rooms file",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 48|tFTmQUCTtVbNlpdoepcKuACqREspf1TDDW2ZzEa6",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "chat_rooms_file",
+									"type": "file",
+									"src": "/F:/chat rooms.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth/import-chat-rooms",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"import-chat-rooms"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

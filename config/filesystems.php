@@ -53,7 +53,12 @@ return [
             'url' => env('APP_URL') . '/public',
             'visibility' => 'public',
         ],
-
+        'chat_rooms_imports' => [
+            'driver' => 'local',
+            'root' => base_path() . '/public/images/chat_rooms_imports/',
+            'url' => env('APP_URL') . '/public',
+            'visibility' => 'public',
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

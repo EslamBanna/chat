@@ -9,6 +9,8 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ChatRoomController extends Controller
 {
@@ -73,6 +75,32 @@ class ChatRoomController extends Controller
             event(new CreateNewChatRoom($s_user_id, $chat_room_data_to_sender));
             return $this->returnSuccessMessage('success');
         } catch (\Exception $e) {
+            return $this->returnError(201, $e->getMessage());
+        }
+    }
+
+    public function importChatRooms(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            if (!$request->hasFile('chat_rooms_file')) {
+                return $this->returnError(202, 'chat chat_rooms_file is required');
+            }
+            $chat_rooms_file = $this->saveImage($request->chat_rooms_file, 'chat_rooms_imports');
+            //    read data and insert it
+            $contents = File::get(base_path() . '/public/images/chat_rooms_imports/' . $chat_rooms_file);
+            // dd($contents);
+            //    return $contents;
+            $data = [];
+            foreach (explode(',', $contents) as $index=>$row) {
+                // return $row;
+                $data[$index] = $row;
+            }
+            return $data;
+            DB::commit();
+            return $this->returnSuccessMessage('success');
+        } catch (\Exception $e) {
+            DB::rollback();
             return $this->returnError(201, $e->getMessage());
         }
     }
